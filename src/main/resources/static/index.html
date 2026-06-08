@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieRank 功能面板</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+    <div>
+        <p class="eyebrow">MovieRank</p>
+        <h1>MovieRank 功能面板</h1>
+    </div>
+    <nav>
+        <a href="#features">功能</a>
+        <a href="#nowplaying">正在上映</a>
+        <a href="#login">登录</a>
+        <a href="#ranking">排名</a>
+        <a href="#tspdt">TSPDT</a>
+    </nav>
+</header>
+
+<main>
+    <section id="features" class="band">
+        <div class="section-head">
+            <h2>已完成功能</h2>
+            <p>当前页面集中展示项目已经接好的后端能力。</p>
+        </div>
+        <div class="feature-grid">
+            <article>
+                <span class="tag">后端接口</span>
+                <h3>电影综合排名</h3>
+                <p>通过 <code>GET /movie-ranks</code> 从 MySQL 读取电影排名，并展示综合分与排名。</p>
+            </article>
+            <article>
+                <span class="tag">数据库</span>
+                <h3>登录功能</h3>
+                <p>通过 <code>POST /login</code> 提交账号密码，由 MyBatis 查询 MySQL 的 <code>user</code> 表。</p>
+            </article>
+            <article>
+                <span class="tag">客户端</span>
+                <h3>Gson 调用示例</h3>
+                <p><code>LoginClient</code> 使用 JDK HttpClient 请求登录接口，并用 Gson 解析返回结果。</p>
+            </article>
+            <article>
+                <span class="tag">网页爬取</span>
+                <h3>TSPDT Top 1000</h3>
+                <p>通过 <code>GET /tspdt/top1000</code> 爬取公开网页表格，并展示电影名、导演、年份、国家和片长。</p>
+            </article>
+            <article>
+                <span class="tag">网页爬取</span>
+                <h3>豆瓣正在上映</h3>
+                <p>通过 <code>GET /nowplaying</code> 爬取豆瓣武汉影院正在上映电影，并用网格卡片展示海报、评分和详情链接。</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="nowplaying" class="band">
+        <div class="section-head">
+            <div>
+                <h2>豆瓣武汉正在上映</h2>
+                <p>页面会自动请求 <code>/nowplaying</code>，爬取豆瓣武汉正在上映电影列表。</p>
+            </div>
+            <a class="source-link" href="https://movie.douban.com/cinema/nowplaying/wuhan/" target="_blank" rel="noreferrer">查看来源</a>
+        </div>
+        <div id="nowplayingStatus" class="status-line">正在加载正在上映电影...</div>
+        <div class="nowplaying-grid" id="nowplayingGrid">
+            <p>正在加载...</p>
+        </div>
+    </section>
+
+    <section class="split">
+        <div id="login" class="panel">
+            <div class="section-head compact">
+                <h2>登录功能</h2>
+                <p>默认测试账号：<code>admin</code> / <code>123456</code></p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <label>
+                    用户名
+                    <input id="username" name="username" value="admin" autocomplete="username">
+                </label>
+                <label>
+                    密码
+                    <input id="password" name="password" type="password" value="123456" autocomplete="current-password">
+                </label>
+                <button type="submit">测试登录</button>
+            </form>
+            <pre id="loginResult" class="result-box">等待登录测试...</pre>
+        </div>
+
+        <div class="panel">
+            <div class="section-head compact">
+                <h2>数据库连接</h2>
+                <p>登录接口会触发真实数据库查询。</p>
+            </div>
+            <dl class="info-list">
+                <div>
+                    <dt>数据库</dt>
+                    <dd>movierank</dd>
+                </div>
+                <div>
+                    <dt>数据表</dt>
+                    <dd>user</dd>
+                </div>
+                <div>
+                    <dt>查询方式</dt>
+                    <dd>MyBatis XML</dd>
+                </div>
+                <div>
+                    <dt>配置文件</dt>
+                    <dd>application.yml</dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+
+    <section id="ranking" class="band">
+        <div class="section-head">
+            <h2>电影综合排名</h2>
+            <p>页面会自动请求 <code>/movie-ranks</code> 并展示数据库中的排名结果。</p>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>电影</th>
+                    <th>年份</th>
+                    <th>豆瓣</th>
+                    <th>IMDb</th>
+                    <th>猫眼</th>
+                    <th>综合分</th>
+                    <th>缺失来源</th>
+                </tr>
+                </thead>
+                <tbody id="rankBody">
+                <tr>
+                    <td colspan="8">正在加载...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="tspdt" class="band">
+        <div class="section-head">
+            <div>
+                <h2>TSPDT Top 1000</h2>
+                <p>页面会自动请求 <code>/tspdt/top1000</code>，展示 They Shoot Pictures, Don't They? 的 Top 1000 电影表格。</p>
+            </div>
+            <a class="source-link" href="https://theyshootpictures.com/gf1000_all1000films_table.php" target="_blank" rel="noreferrer">查看来源</a>
+        </div>
+        <div id="tspdtStatus" class="status-line">正在加载 TSPDT Top 1000...</div>
+        <div class="table-wrap tall-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>上版排名</th>
+                    <th>电影</th>
+                    <th>导演</th>
+                    <th>年份</th>
+                    <th>国家</th>
+                    <th>片长</th>
+                </tr>
+                </thead>
+                <tbody id="tspdtBody">
+                <tr>
+                    <td colspan="7">正在加载...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

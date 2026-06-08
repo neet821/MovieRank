@@ -1,0 +1,48 @@
+package com.neet821.movierank;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.nio.charset.StandardCharsets;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class WebInterfaceTests {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    void homePageShowsImplementedFeatures() throws Exception {
+        MvcResult result = mockMvc.perform(get("/index.html"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String html = new String(result.getResponse().getContentAsByteArray(), StandardCharsets.UTF_8);
+
+        assertThat(html).contains("MovieRank 功能面板");
+        assertThat(html).contains("登录功能");
+        assertThat(html).contains("电影综合排名");
+        assertThat(html).contains("TSPDT Top 1000");
+        assertThat(html).contains("tspdtBody");
+    }
+
+    @Test
+    void appScriptIsAvailable() throws Exception {
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("loadMovieRanks")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("loadTspdtTop1000")));
+    }
+}

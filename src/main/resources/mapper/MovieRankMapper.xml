@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neet821.movierank.mapper.MovieRankMapper">
+    <resultMap id="MovieRankResultMap" type="com.neet821.movierank.entity.MovieRank">
+        <result property="title" column="title"/>
+        <result property="year" column="year"/>
+        <result property="doubanScore" column="douban_score"/>
+        <result property="imdbScore" column="imdb_score"/>
+        <result property="maoyanScore" column="maoyan_score"/>
+        <result property="finalScore" column="final_score"/>
+        <result property="finalRank" column="final_rank"/>
+        <result property="missingSources" column="missing_sources"/>
+    </resultMap>
+
+    <select id="findAllOrdered" resultMap="MovieRankResultMap">
+        select title,
+               year,
+               douban_score,
+               imdb_score,
+               maoyan_score,
+               final_score,
+               final_rank,
+               missing_sources
+        from movie_rank
+        order by final_rank asc
+    </select>
+</mapper>
