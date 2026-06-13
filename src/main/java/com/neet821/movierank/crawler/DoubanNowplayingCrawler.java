@@ -18,11 +18,6 @@ public class DoubanNowplayingCrawler {
 
     private static final String NOWPLAYING_URL = "https://movie.douban.com/cinema/nowplaying/wuhan/";
     private static final Logger log = LoggerFactory.getLogger(DoubanNowplayingCrawler.class);
-    private final TmdbMovieClient tmdbMovieClient;
-
-    public DoubanNowplayingCrawler(TmdbMovieClient tmdbMovieClient) {
-        this.tmdbMovieClient = tmdbMovieClient;
-    }
 
     public List<NowPlayingMovie> crawl() throws IOException {
         Document doc = Jsoup.connect(NOWPLAYING_URL)
@@ -87,12 +82,8 @@ public class DoubanNowplayingCrawler {
                 if (src.isBlank()) {
                     src = posterImg.attr("data-src");
                 }
-                if (!src.isBlank()) {
-                    movie.setPosterUrl(src);
-                    movie.setPosterSource("豆瓣");
-                }
+                movie.setPosterUrl(src);
             }
-            enrichFromTmdb(movie);
 
             // 评分 — .srating .subject-rate 或 .srating .text-tip 或 data-score 属性
             Element ratingEl = item.selectFirst(".srating .subject-rate");
@@ -122,19 +113,5 @@ public class DoubanNowplayingCrawler {
         }
 
         return movies;
-    }
-
-    private void enrichFromTmdb(NowPlayingMovie movie) {
-        tmdbMovieClient.findMovie(movie.getTitle()).ifPresent(match -> {
-            if (match.posterUrl() != null && !match.posterUrl().isBlank()) {
-                movie.setPosterUrl(match.posterUrl());
-            }
-            movie.setPosterSource("TMDB");
-            movie.setTmdbUrl(match.detailUrl());
-            movie.setOverview(match.overview());
-            movie.setReleaseDate(match.releaseDate());
-            movie.setTmdbRating(match.voteAverage());
-            movie.setPopularity(match.popularity());
-        });
     }
 }
