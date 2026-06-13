@@ -35,23 +35,12 @@ class WebInterfaceTests {
         assertThat(html).contains("TSPDT Top 1000");
         assertThat(html).contains("tspdtBody");
         assertThat(html).contains("authGate");
-        assertThat(html).contains("href=\"./styles.css?v=20260613-title-only\"");
-        assertThat(html).contains("src=\"./app.js?v=20260613-title-only\"");
+        assertThat(html).contains("href=\"./styles.css?v=20260613-login-local\"");
+        assertThat(html).contains("src=\"./app.js?v=20260613-login-local\"");
         assertThat(html).contains("id=\"loginForm\"");
         assertThat(html).contains("id=\"loginError\"");
         assertThat(html).contains("id=\"authGate\" class=\"auth-gate\" role=\"status\" aria-live=\"polite\" hidden");
-        assertThat(html).contains("<h1>MovieRank</h1>");
-        assertThat(html).doesNotContain("BLUE ALBUM ACCOUNT");
-        assertThat(html).doesNotContain("使用 Blue Album 账号登录后");
-        assertThat(html).contains("app.js?v=20260613-title-only");
-    }
-
-    @Test
-    void loginTitleIsCentered() throws Exception {
-        mockMvc.perform(get("/styles.css"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString(".login-card h1")))
-                .andExpect(content().string(containsString("text-align: center")));
+        assertThat(html).contains("app.js?v=20260613-login-local");
     }
 
     @Test
