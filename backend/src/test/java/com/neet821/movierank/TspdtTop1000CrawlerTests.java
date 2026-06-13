@@ -1,6 +1,8 @@
 package com.neet821.movierank;
 
 import com.neet821.movierank.crawler.TspdtTop1000Crawler;
+import com.neet821.movierank.crawler.TspdtMovieRankCrawler;
+import com.neet821.movierank.model.SourceMovieRank;
 import com.neet821.movierank.model.TspdtMovieRank;
 import org.junit.jupiter.api.Test;
 
@@ -57,5 +59,22 @@ class TspdtTop1000CrawlerTests {
 
         assertThat(movies).hasSize(1000);
         assertThat(movies.get(movies.size() - 1).getPosition()).isEqualTo(1000);
+    }
+
+    @Test
+    void adapterKeepsParsedTspdtMovieTitlesAndRanks() {
+        TspdtMovieRank citizenKane = new TspdtMovieRank();
+        citizenKane.setPosition(1);
+        citizenKane.setTitle("Citizen Kane");
+        citizenKane.setYear("1941");
+
+        List<SourceMovieRank> rows = new TspdtMovieRankCrawler(new TspdtTop1000Crawler())
+                .toSourceRanks(List.of(citizenKane));
+
+        assertThat(rows).hasSize(1);
+        assertThat(rows.get(0).getTitle()).isEqualTo("Citizen Kane");
+        assertThat(rows.get(0).getYear()).isEqualTo(1941);
+        assertThat(rows.get(0).getSourceRank()).isEqualTo(1);
+        assertThat(rows.get(0).getSourceName()).isEqualTo("TSPDT");
     }
 }

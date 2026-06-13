@@ -13,3 +13,6 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.neet821.movierank.entity
+
+tmdb:
+  api-key: ${TMDB_API_KEY:}
