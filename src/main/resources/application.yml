@@ -1,15 +1,20 @@
 server:
-  port: 8080
+  port: ${MOVIERANK_PORT:8080}
 
 spring:
   application:
     name: MovieRank
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/movierank?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: "0852"
+    url: ${MOVIERANK_DB_URL:jdbc:mysql://localhost:3306/movierank?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${MOVIERANK_DB_USERNAME:root}
+    password: ${MOVIERANK_DB_PASSWORD:0852}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.neet821.movierank.entity
+
+tmdb:
+  api:
+    read-token: ${TMDB_API_READ_TOKEN:}
+    key: ${TMDB_API_KEY:}

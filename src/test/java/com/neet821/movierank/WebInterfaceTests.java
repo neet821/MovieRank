@@ -29,11 +29,18 @@ class WebInterfaceTests {
 
         String html = new String(result.getResponse().getContentAsByteArray(), StandardCharsets.UTF_8);
 
-        assertThat(html).contains("MovieRank 功能面板");
-        assertThat(html).contains("登录功能");
+        assertThat(html).contains("MovieRank");
+        assertThat(html).contains("Blue Album");
         assertThat(html).contains("电影综合排名");
         assertThat(html).contains("TSPDT Top 1000");
         assertThat(html).contains("tspdtBody");
+        assertThat(html).contains("authGate");
+        assertThat(html).contains("href=\"./styles.css?v=20260613-login-local\"");
+        assertThat(html).contains("src=\"./app.js?v=20260613-login-local\"");
+        assertThat(html).contains("id=\"loginForm\"");
+        assertThat(html).contains("id=\"loginError\"");
+        assertThat(html).contains("id=\"authGate\" class=\"auth-gate\" role=\"status\" aria-live=\"polite\" hidden");
+        assertThat(html).contains("app.js?v=20260613-login-local");
     }
 
     @Test
@@ -44,5 +51,37 @@ class WebInterfaceTests {
         mockMvc.perform(get("/app.js"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("loadTspdtTop1000")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("ensureBlueAlbumSession")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/movie-rank-api")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("submitBlueAlbumLogin")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("/api/auth/login")));
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.not(containsString("window.location.href"))));
+    }
+
+    @Test
+    void movieCardsStayInsidePrivateRoute() throws Exception {
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("poster-empty")))
+                .andExpect(content().string(containsString("movie-card")));
+    }
+
+    @Test
+    void nowPlayingCardsShowTmdbDetails() throws Exception {
+        mockMvc.perform(get("/app.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("tmdbRating")))
+                .andExpect(content().string(containsString("overview")))
+                .andExpect(content().string(containsString("releaseDate")));
     }
 }
