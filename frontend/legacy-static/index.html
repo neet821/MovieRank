@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MovieRank</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>MovieRank</h1>
+    </header>
+
+    <main>
+      <section id="nowplaying" class="band">
+        <div class="section-head">
+          <div>
+            <h2>豆瓣武汉正在上映</h2>
+            <p>
+              页面会自动请求
+              <code>/nowplaying</code>，爬取豆瓣武汉正在上映电影列表。
+            </p>
+          </div>
+          <a
+            class="source-link"
+            href="https://movie.douban.com/cinema/nowplaying/wuhan/"
+            target="_blank"
+            rel="noreferrer"
+            >查看来源</a
+          >
+        </div>
+        <div id="nowplayingStatus" class="status-line">
+          正在加载正在上映电影...
+        </div>
+        <div class="nowplaying-grid" id="nowplayingGrid">
+          <p>正在加载...</p>
+        </div>
+      </section>
+
+      <section id="tspdt" class="band">
+        <div class="section-head">
+          <div>
+            <h2>TSPDT Top 1000</h2>
+            <p>
+              页面会自动请求 <code>/tspdt/top1000</code>，展示 They Shoot
+              Pictures, Don't They? 的 Top 1000 电影表格。
+            </p>
+          </div>
+          <a
+            class="source-link"
+            href="https://theyshootpictures.com/gf1000_all1000films_table.php"
+            target="_blank"
+            rel="noreferrer"
+            >查看来源</a
+          >
+        </div>
+        <div id="tspdtStatus" class="status-line">
+          正在加载 TSPDT Top 1000...
+        </div>
+        <div class="table-wrap tall-table">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>上版排名</th>
+                <th>电影</th>
+                <th>导演</th>
+                <th>年份</th>
+                <th>国家</th>
+                <th>片长</th>
+              </tr>
+            </thead>
+            <tbody id="tspdtBody">
+              <tr>
+                <td colspan="7">正在加载...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
